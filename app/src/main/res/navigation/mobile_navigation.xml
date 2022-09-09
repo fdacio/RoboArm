@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_bluetooth">
+
+    <fragment
+        android:id="@+id/navigation_bluetooth"
+        android:name="br.com.daciosoftware.roboarm.ui.bluetotooth.BluetoothFragment"
+        android:label="@string/title_bluetooth"
+        tools:layout="@layout/fragment_bluetooth" />
+
+    <fragment
+        android:id="@+id/navigation_comandos"
+        android:name="br.com.daciosoftware.roboarm.ui.comandos.ComandosFragment"
+        android:label="@string/title_comandos"
+        tools:layout="@layout/fragment_bluetooth" />
+
+    <fragment
+        android:id="@+id/navigation_roboarm"
+        android:name="br.com.daciosoftware.roboarm.ui.roboarm.RoboArmFragment"
+        android:label="@string/title_roboarm"
+        tools:layout="@layout/fragment_roboarm" />
+</navigation>

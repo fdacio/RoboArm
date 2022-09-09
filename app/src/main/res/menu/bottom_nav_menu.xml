@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_bluetooth"
+        android:icon="@drawable/ic_baseline_bluetooth_24"
+        android:title="@string/title_bluetooth" />
+
+    <item
+        android:id="@+id/navigation_comandos"
+        android:icon="@drawable/ic_baseline_keyboard_24"
+        android:title="@string/title_comandos" />
+
+    <item
+        android:id="@+id/navigation_roboarm"
+        android:icon="@drawable/ic_baseline_roboarm_24"
+        android:title="@string/title_roboarm" />
+
+</menu>
