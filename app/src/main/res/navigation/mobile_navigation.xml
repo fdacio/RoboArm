@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_bluetooth" />
 
     <fragment
-        android:id="@+id/navigation_comandos"
-        android:name="br.com.daciosoftware.roboarm.ui.comandos.ComandosFragment"
-        android:label="@string/title_comandos"
+        android:id="@+id/navigation_troca"
+        android:name="br.com.daciosoftware.roboarm.ui.troca.TrocaFragment"
+        android:label="@string/title_troca"
         tools:layout="@layout/fragment_bluetooth" />
 
     <fragment

@@ -1,4 +1,4 @@
-package br.com.daciosoftware.roboarm.ui.comandos;
+package br.com.daciosoftware.roboarm.ui.troca;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import br.com.daciosoftware.roboarm.BluetoothConnection;
 import br.com.daciosoftware.roboarm.BluetoothInstance;
 import br.com.daciosoftware.roboarm.R;
 
-public class ComandosFragment extends Fragment {
+public class TrocaFragment extends Fragment {
 
     private View root;
     private Context mContext;

@@ -7,9 +7,9 @@
         android:title="@string/title_bluetooth" />
 
     <item
-        android:id="@+id/navigation_comandos"
-        android:icon="@drawable/ic_baseline_keyboard_24"
-        android:title="@string/title_comandos" />
+        android:id="@+id/navigation_troca"
+        android:icon="@drawable/ic_baseline_call_split_24"
+        android:title="@string/title_troca" />
 
     <item
         android:id="@+id/navigation_roboarm"
