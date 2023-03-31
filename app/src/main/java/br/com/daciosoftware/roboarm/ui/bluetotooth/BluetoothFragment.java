@@ -1,6 +1,7 @@
 package br.com.daciosoftware.roboarm.ui.bluetotooth;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -32,10 +33,10 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Set;
 
-import br.com.daciosoftware.roboarm.BluetoothConnection;
+import br.com.daciosoftware.roboarm.BluetoothConnectionTask;
 import br.com.daciosoftware.roboarm.BluetoothConnectionListener;
 import br.com.daciosoftware.roboarm.BluetoothInstance;
-import br.com.daciosoftware.roboarm.DevicesBluetoothAdapter;
+import br.com.daciosoftware.roboarm.BluetoothDevicesPairedAdapter;
 import br.com.daciosoftware.roboarm.R;
 
 public class BluetoothFragment extends Fragment implements AdapterView.OnItemClickListener, BluetoothConnectionListener {
@@ -47,7 +48,6 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
     private ListView listViewDevices;
     private BroadcastReceiver receiver;
     private ProgressDialog mProgressDlg;
-    private View root;
     private BluetoothDevice devicePaired;
     private Context mContext;
 
@@ -57,11 +57,12 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         mContext = context;
     }
 
+    @SuppressLint("MissingPermission")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true); // Torna o menu action bar visivel;
 
-        root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
+        View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
 
         receiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
@@ -71,7 +72,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
                     mProgressDlg.show();
                 } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                     mProgressDlg.dismiss();
-                    DevicesBluetoothAdapter devicesBluetoothAdapter = new DevicesBluetoothAdapter(mContext);
+                    BluetoothDevicesPairedAdapter devicesBluetoothAdapter = new BluetoothDevicesPairedAdapter(mContext);
                     devicesBluetoothAdapter.setData(listDevices);
                     listViewDevices.setAdapter(devicesBluetoothAdapter);
                 } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
@@ -125,6 +126,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         inflater.inflate(R.menu.menu_bluetooth, menu);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -133,7 +135,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
                 return true;
             }
             case R.id.action_bluetooth_disconnect: {
-                BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
                 if (bluetoothConnection != null) {
                     bluetoothConnection.disconnect();
                 }
@@ -150,7 +152,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         super.onPrepareOptionsMenu(menu);
         MenuItem itemDisconnect = menu.findItem(R.id.action_bluetooth_disconnect);
         MenuItem itemDiscovery = menu.findItem(R.id.action_bluetooth);
-        BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+        BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
         if (bluetoothConnection == null) {
             itemDiscovery.setVisible(true);
             itemDisconnect.setVisible(false);
@@ -171,11 +173,9 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     private void enableBluetooth() {
-
         if (bluetoothAdapter == null) {
             return;
         }
-
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BLUETOOTH);
@@ -187,17 +187,19 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     //Dispositivo pareados anteriormente
+    @SuppressLint("MissingPermission")
     private void loadDevicesBonded() {
         Set<BluetoothDevice> bondedDevice = bluetoothAdapter.getBondedDevices();
         listDevices.clear();
         for (BluetoothDevice device : bondedDevice) {
             listDevices.add(device);
         }
-        DevicesBluetoothAdapter devicesBluetoothAdapter = new DevicesBluetoothAdapter(mContext);
+        BluetoothDevicesPairedAdapter devicesBluetoothAdapter = new BluetoothDevicesPairedAdapter(mContext);
         devicesBluetoothAdapter.setData(listDevices);
         listViewDevices.setAdapter(devicesBluetoothAdapter);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -214,6 +216,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onPause() {
         if (bluetoothAdapter != null) {
@@ -244,13 +247,14 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
             return;
         }
         devicePaired = listDevices.get(position);
-        BluetoothConnection bluetoothConnection = new BluetoothConnection(devicePaired, this, mContext);
+        BluetoothConnectionTask bluetoothConnection = new BluetoothConnectionTask(devicePaired, this, mContext);
         BluetoothInstance.setInstance(bluetoothConnection);
         if (bluetoothConnection.getStatus() == AsyncTask.Status.PENDING || bluetoothConnection.getStatus() == AsyncTask.Status.FINISHED) {
             bluetoothConnection.execute();
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void setConnected(BluetoothDevice device) {
         AppCompatActivity activity = (AppCompatActivity) mContext;
@@ -267,10 +271,14 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     @Override
-    public void listenerServer(byte[] dados) {
-        for (int i = 0; i < 1024; i++) {
-            Log.i("DATA_SERVER", String.valueOf((char)dados[i]));
-        }
+    public void readFromDevicePaired(String dadosLido) {
+        /*
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        String message = (String) activity.getSupportActionBar().getSubtitle();
+        activity.getSupportActionBar().setSubtitle(message + " - Bateria: " + dadosLido + "%");
+        activity.invalidateOptionsMenu();
+        */
+        Log.i("VESPA", dadosLido);
     }
 
 }

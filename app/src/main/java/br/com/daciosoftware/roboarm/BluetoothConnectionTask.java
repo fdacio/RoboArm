@@ -1,5 +1,6 @@
 package br.com.daciosoftware.roboarm;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-public class BluetoothConnection extends AsyncTask<Void, Void, BluetoothDevice> {
+public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevice> {
 
     private BluetoothSocket mmSocket;
     private OutputStream mmOutStream;
@@ -25,7 +26,7 @@ public class BluetoothConnection extends AsyncTask<Void, Void, BluetoothDevice> 
     private ProgressDialog progressDialog;
     private char[] dados;
 
-    public BluetoothConnection(BluetoothDevice device, BluetoothConnectionListener listener, Context context) {
+    public BluetoothConnectionTask(BluetoothDevice device, BluetoothConnectionListener listener, Context context) {
 
         mmDevice = device;
         mmListener = listener;
@@ -36,10 +37,11 @@ public class BluetoothConnection extends AsyncTask<Void, Void, BluetoothDevice> 
         return mmListener;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected BluetoothDevice doInBackground(Void... params) {
         BluetoothSocket tmp = null;
-        String _uuid  = "9863bf68-8b8f-11ec-a8a3-0242ac120002";
+        String _uuid = "9863bf68-8b8f-11ec-a8a3-0242ac120002";
         String _uuid2 = "00001101-0000-1000-8000-00805F9B34FB";
         try {
             tmp = mmDevice.createRfcommSocketToServiceRecord(UUID.fromString(_uuid2));
@@ -87,7 +89,7 @@ public class BluetoothConnection extends AsyncTask<Void, Void, BluetoothDevice> 
         progressDialog.dismiss();
         if (connected) {
             mmListener.setConnected(device);
-            Thread bluetoothConnectionListenerServer = new Thread(new BluetoothConnectionListenerServer());
+            Thread bluetoothConnectionListenerServer = new Thread(new BluetoothDevicePairedListener());
             bluetoothConnectionListenerServer.start();
         } else {
             Toast.makeText(mmContext, "Não foi possível conectar.", Toast.LENGTH_LONG).show();
@@ -127,23 +129,34 @@ public class BluetoothConnection extends AsyncTask<Void, Void, BluetoothDevice> 
         return connected;
     }
 
-    //Class thread escuta dados do servidor bluetooth
-    private class BluetoothConnectionListenerServer implements Runnable {
+    //Class thread escuta dados do dispositivo ṕareado bluetooth
+    private class BluetoothDevicePairedListener implements Runnable {
         @Override
         public void run() {
-            /*
-            while(true) {
+            while (true) {
+
                 try {
                     byte[] buffer = new byte[1024];
                     mmInputStream.read(buffer);
-                    mmListener.listenerServer(buffer);
-                    Thread.sleep(1000);
+                    StringBuilder leitura = new StringBuilder();
+                    for (int i = 0; i < 1024; i++) {
+                        if ((buffer[i] != '\n') && (buffer[i] != '\r')) {
+                            leitura.append((char) buffer[i]);
+                        } else {
+                            if (leitura.length() > 0) {
+                                mmListener.readFromDevicePaired(leitura.toString());
+                            }
+                            break;
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    throw new RuntimeException();
                 }
+
             }
-            
-             */
+
         }
+
     }
 }

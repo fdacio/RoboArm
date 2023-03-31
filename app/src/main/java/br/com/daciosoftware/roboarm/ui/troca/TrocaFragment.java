@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import br.com.daciosoftware.roboarm.BluetoothConnection;
+import br.com.daciosoftware.roboarm.BluetoothConnectionTask;
 import br.com.daciosoftware.roboarm.BluetoothInstance;
 import br.com.daciosoftware.roboarm.R;
 
@@ -42,7 +42,7 @@ public class TrocaFragment extends Fragment {
                     Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
                     return;
                 }
-                BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
                 String command = "A\n";
                 bluetoothConnection.write(command.getBytes());
             }
@@ -55,7 +55,7 @@ public class TrocaFragment extends Fragment {
                     Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
                     return;
                 }
-                BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
                 String command = "B\n";
                 bluetoothConnection.write(command.getBytes());
             }
@@ -68,7 +68,7 @@ public class TrocaFragment extends Fragment {
                     Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
                     return;
                 }
-                BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
                 String command = "C\n";
                 bluetoothConnection.write(command.getBytes());
             }
@@ -81,7 +81,7 @@ public class TrocaFragment extends Fragment {
                     Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
                     return;
                 }
-                BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
                 String command = "D\n";
                 bluetoothConnection.write(command.getBytes());
             }
@@ -93,7 +93,7 @@ public class TrocaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+        BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
         if (BluetoothInstance.isConnected()) {
             bluetoothConnection.write("F1\n".getBytes());
         }

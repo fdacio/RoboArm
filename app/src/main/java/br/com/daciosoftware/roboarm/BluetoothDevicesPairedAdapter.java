@@ -1,5 +1,6 @@
 package br.com.daciosoftware.roboarm;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,12 +11,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class DevicesBluetoothAdapter extends BaseAdapter {
+public class BluetoothDevicesPairedAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<BluetoothDevice> mData;
 
-    public DevicesBluetoothAdapter(Context context) {
+    public BluetoothDevicesPairedAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
@@ -35,6 +36,7 @@ public class DevicesBluetoothAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("MissingPermission")
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 

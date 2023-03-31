@@ -2,13 +2,15 @@ package br.com.daciosoftware.roboarm;
 
 public class BluetoothInstance {
 
-    private static BluetoothConnection mmInstance;
+    private static BluetoothConnectionTask mmInstance;
 
-    public static BluetoothConnection getInstance() {
+    private BluetoothInstance(){}
+
+    public static BluetoothConnectionTask getInstance() {
         return mmInstance;
     }
 
-    public static void setInstance(BluetoothConnection instance) {
+    public static void setInstance(BluetoothConnectionTask instance) {
         mmInstance = instance;
     }
 

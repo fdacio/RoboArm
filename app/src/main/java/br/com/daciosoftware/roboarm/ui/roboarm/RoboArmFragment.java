@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import br.com.daciosoftware.roboarm.BluetoothConnection;
+import br.com.daciosoftware.roboarm.BluetoothConnectionTask;
 import br.com.daciosoftware.roboarm.BluetoothInstance;
 import br.com.daciosoftware.roboarm.R;
 
@@ -132,14 +132,14 @@ public class RoboArmFragment extends Fragment {
                 Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
                 return;
             }
-            BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+            BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
             bluetoothConnection.write(command.getBytes());
         }
     }
     @Override
     public void onResume() {
         super.onResume();
-        BluetoothConnection bluetoothConnection = BluetoothInstance.getInstance();
+        BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
         if (BluetoothInstance.isConnected()) {
             bluetoothConnection.write("F2\n".getBytes());
         }
