@@ -23,10 +23,4 @@ public class BluetoothInstance {
         return true;
     }
 
-    public static void disconnect() {
-        if (mmInstance != null) {
-            mmInstance.disconnect();
-        }
-    }
-
 }

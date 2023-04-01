@@ -13,6 +13,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,6 +52,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
     private ProgressDialog mProgressDlg;
     private BluetoothDevice devicePaired;
     private Context mContext;
+    public Handler mHandler;
 
     @Override
     public void onAttach(Context context) {
@@ -116,6 +119,19 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
 
         enableBluetooth();
         grantAccessLocation();
+
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message message){
+                AppCompatActivity activity = (AppCompatActivity) mContext;
+                String percBateria = message.getData().getString("dados");
+                String conectadoCom = devicePaired.getName();
+                String textoSubtitle = String.format("Conectado com %s - Bateria: %s%%", conectadoCom, percBateria);
+                activity.getSupportActionBar().setSubtitle(textoSubtitle);
+                activity.invalidateOptionsMenu();
+                super.handleMessage(message);
+            }
+        };
 
         return root;
 
@@ -272,13 +288,11 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void readFromDevicePaired(String dadosLido) {
-        /*
-        AppCompatActivity activity = (AppCompatActivity) mContext;
-        String message = (String) activity.getSupportActionBar().getSubtitle();
-        activity.getSupportActionBar().setSubtitle(message + " - Bateria: " + dadosLido + "%");
-        activity.invalidateOptionsMenu();
-        */
-        Log.i("VESPA", dadosLido);
+        Message msg = Message.obtain();
+        Bundle bundle = new Bundle();
+        bundle.putString("dados", dadosLido);
+        msg.setData(bundle);
+        mHandler.sendMessage(msg);
     }
 
 }

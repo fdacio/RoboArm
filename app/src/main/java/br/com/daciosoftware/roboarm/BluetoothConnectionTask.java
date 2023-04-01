@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevice> {
 
-    private BluetoothSocket mmSocket;
+    private BluetoothSocket mmBluetoothSocket;
     private OutputStream mmOutStream;
     private InputStream mmInputStream;
     private boolean connected = false;
@@ -24,7 +24,7 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
     private BluetoothConnectionListener mmListener;
     private Context mmContext;
     private ProgressDialog progressDialog;
-    private char[] dados;
+    private Thread threadPairedDeviceObserver;
 
     public BluetoothConnectionTask(BluetoothDevice device, BluetoothConnectionListener listener, Context context) {
 
@@ -40,21 +40,19 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
     @SuppressLint("MissingPermission")
     @Override
     protected BluetoothDevice doInBackground(Void... params) {
-        BluetoothSocket tmp = null;
-        String _uuid = "9863bf68-8b8f-11ec-a8a3-0242ac120002";
+        BluetoothSocket bluetoothSocket = null;
         String _uuid2 = "00001101-0000-1000-8000-00805F9B34FB";
         try {
-            tmp = mmDevice.createRfcommSocketToServiceRecord(UUID.fromString(_uuid2));
-
+            bluetoothSocket = mmDevice.createRfcommSocketToServiceRecord(UUID.fromString(_uuid2));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mmSocket = tmp;
+        mmBluetoothSocket = bluetoothSocket;
         OutputStream tmpOut = null;
         InputStream tmpIn = null;
         try {
-            tmpOut = mmSocket.getOutputStream();
-            tmpIn = mmSocket.getInputStream();
+            tmpOut = mmBluetoothSocket.getOutputStream();
+            tmpIn = mmBluetoothSocket.getInputStream();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,13 +63,13 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
 
         try {
-            mmSocket.connect();
+            mmBluetoothSocket.connect();
             connected = true;
         } catch (IOException e) {
             e.printStackTrace();
             connected = false;
             try {
-                mmSocket.close();
+                mmBluetoothSocket.close();
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
@@ -89,8 +87,9 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
         progressDialog.dismiss();
         if (connected) {
             mmListener.setConnected(device);
-            Thread bluetoothConnectionListenerServer = new Thread(new BluetoothDevicePairedListener());
-            bluetoothConnectionListenerServer.start();
+            threadPairedDeviceObserver = new Thread(new ThreadPairedDeviceObserver());
+            threadPairedDeviceObserver.start();
+
         } else {
             Toast.makeText(mmContext, "Não foi possível conectar.", Toast.LENGTH_LONG).show();
         }
@@ -109,19 +108,15 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
     }
 
     public void disconnect() {
-        try {
-            if (mmOutStream != null) {
-                mmOutStream.close();
-                mmOutStream = null;
+        threadPairedDeviceObserver.interrupt();
+        connected = false;
+        mmListener.setDisconnected();
+        if (mmBluetoothSocket != null) {
+            try {
+                mmBluetoothSocket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (mmSocket != null) {
-                mmSocket.close();
-                mmSocket = null;
-            }
-            connected = false;
-            mmListener.setDisconnected();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -130,33 +125,31 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
     }
 
     //Class thread escuta dados do dispositivo ṕareado bluetooth
-    private class BluetoothDevicePairedListener implements Runnable {
+    private class ThreadPairedDeviceObserver implements Runnable {
         @Override
         public void run() {
-            while (true) {
-
-                try {
-                    byte[] buffer = new byte[1024];
-                    mmInputStream.read(buffer);
-                    StringBuilder leitura = new StringBuilder();
-                    for (int i = 0; i < 1024; i++) {
-                        if ((buffer[i] != '\n') && (buffer[i] != '\r')) {
-                            leitura.append((char) buffer[i]);
-                        } else {
-                            if (leitura.length() > 0) {
-                                mmListener.readFromDevicePaired(leitura.toString());
+            while (connected) {
+                if (mmInputStream != null){
+                    try {
+                        byte[] buffer = new byte[1024];
+                        mmInputStream.read(buffer);
+                        StringBuilder leitura = new StringBuilder();
+                        for (int i = 0; i < 1024; i++) {
+                            if ((buffer[i] != '\n') && (buffer[i] != '\r')) {
+                                leitura.append((char) buffer[i]);
+                            } else {
+                                if (leitura.length() > 0) {
+                                    mmListener.readFromDevicePaired(leitura.toString());
+                                }
+                                break;
                             }
-                            break;
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        break;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new RuntimeException();
                 }
-
             }
-
         }
-
     }
 }
