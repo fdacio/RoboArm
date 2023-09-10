@@ -59,9 +59,9 @@ public class RoboArmFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(SHARED_PREF, 0);
         seekBarServoBase.setProgress(sharedPreferences.getInt(BASE, 0));
-        seekBarServoAltura.setProgress(sharedPreferences.getInt(ALTURA, 0));
-        seekBarServoAngulo.setProgress(sharedPreferences.getInt(ANGULO, 0));
-        seekBarServoGarra.setProgress(sharedPreferences.getInt(GARRA, 0));
+        seekBarServoAltura.setProgress(sharedPreferences.getInt(ALTURA, 180));
+        seekBarServoAngulo.setProgress(sharedPreferences.getInt(ANGULO, 70));
+        seekBarServoGarra.setProgress(sharedPreferences.getInt(GARRA, 180));
 
         seekBarServoBase.setOnSeekBarChangeListener(new SeekBarChange(textViewValorBase));
         seekBarServoAltura.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAltura));

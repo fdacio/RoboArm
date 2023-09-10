@@ -129,7 +129,7 @@ public class BluetoothConnectionTask extends AsyncTask<Void, Void, BluetoothDevi
         @Override
         public void run() {
             while (connected) {
-                if (mmInputStream != null){
+                if (mmInputStream != null) {
                     try {
                         byte[] buffer = new byte[1024];
                         mmInputStream.read(buffer);

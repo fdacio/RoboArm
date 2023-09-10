@@ -15,8 +15,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="app/src/main/res/layout/devices_adapter.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_bluetooth.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_comandos.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/fragment_roboarm.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_comandos.xml" value="1.0" />
+        <entry key="app/src/main/res/layout/fragment_roboarm.xml" value="0.8125" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.19722222222222222" />
         <entry key="app/src/main/res/menu/menu_bluetooth.xml" value="0.1" />
       </map>
