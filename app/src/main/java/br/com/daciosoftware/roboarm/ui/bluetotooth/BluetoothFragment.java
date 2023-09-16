@@ -35,8 +35,8 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Set;
 
-import br.com.daciosoftware.roboarm.BluetoothConnectionTask;
 import br.com.daciosoftware.roboarm.BluetoothConnectionListener;
+import br.com.daciosoftware.roboarm.BluetoothConnectionTask;
 import br.com.daciosoftware.roboarm.BluetoothInstance;
 import br.com.daciosoftware.roboarm.DevicesBluetoothAdapter;
 import br.com.daciosoftware.roboarm.R;
