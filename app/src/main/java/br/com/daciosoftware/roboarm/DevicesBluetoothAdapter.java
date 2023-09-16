@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class BluetoothDevicesPairedAdapter extends BaseAdapter {
+public class DevicesBluetoothAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private List<BluetoothDevice> mData;
 
-    public BluetoothDevicesPairedAdapter(Context context) {
+    public DevicesBluetoothAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
