@@ -1,5 +1,6 @@
 package br.com.daciosoftware.roboarm.ui.troca;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,80 +12,71 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import br.com.daciosoftware.roboarm.BluetoothConnectionTask;
-import br.com.daciosoftware.roboarm.BluetoothInstance;
 import br.com.daciosoftware.roboarm.R;
+import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
 public class TrocaFragment extends Fragment {
 
-    private View root;
     private Context mContext;
 
+    private BluetoothManagerControl bluetoothManagerControl;
+
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
+        bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_comandos, container, false);
+        setHasOptionsMenu(true);
+
+        View root = inflater.inflate(R.layout.fragment_comandos, container, false);
 
         Button buttonStart = root.findViewById(R.id.button_start);
         Button buttonStop = root.findViewById(R.id.button_stop);
         Button buttonSpeed1 = root.findViewById(R.id.button_speed1);
         Button buttonSpeed2 = root.findViewById(R.id.button_speed2);
 
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!BluetoothInstance.isConnected()) {
-                    Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
-                String command = "A\n";
-                bluetoothConnection.write(command.getBytes());
+        buttonStart.setOnClickListener(v -> {
+            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+            if (devicePaired  == null) {
+                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                return;
             }
+            String command = "A\n";
+            bluetoothManagerControl.write(command.getBytes());
         });
 
-        buttonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!BluetoothInstance.isConnected()) {
-                    Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
-                String command = "B\n";
-                bluetoothConnection.write(command.getBytes());
+        buttonStop.setOnClickListener(v -> {
+            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+            if (devicePaired  == null) {
+                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                return;
             }
+            String command = "B\n";
+            bluetoothManagerControl.write(command.getBytes());
         });
 
-        buttonSpeed1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!BluetoothInstance.isConnected()) {
-                    Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
-                String command = "C\n";
-                bluetoothConnection.write(command.getBytes());
+        buttonSpeed1.setOnClickListener(v -> {
+            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+            if (devicePaired  == null) {
+                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                return;
             }
+            String command = "C\n";
+            bluetoothManagerControl.write(command.getBytes());
         });
 
-        buttonSpeed2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!BluetoothInstance.isConnected()) {
-                    Toast.makeText(mContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
-                String command = "D\n";
-                bluetoothConnection.write(command.getBytes());
+        buttonSpeed2.setOnClickListener(v -> {
+            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+            if (devicePaired  == null) {
+                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                return;
             }
+            String command = "D\n";
+            bluetoothManagerControl.write(command.getBytes());
         });
 
         return root;
@@ -93,9 +85,6 @@ public class TrocaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        BluetoothConnectionTask bluetoothConnection = BluetoothInstance.getInstance();
-        if (BluetoothInstance.isConnected()) {
-            bluetoothConnection.write("F1\n".getBytes());
-        }
+        bluetoothManagerControl.write(String.format("%s\n", "F1").getBytes());
     }
 }

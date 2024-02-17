@@ -1,4 +1,4 @@
-package br.com.daciosoftware.roboarm;
+package br.com.daciosoftware.roboarm.ui.bluetotooth;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
@@ -11,16 +11,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class DevicesBluetoothAdapter extends BaseAdapter {
+import br.com.daciosoftware.roboarm.R;
 
-    private LayoutInflater mInflater;
-    private List<BluetoothDevice> mData;
+public class BluetoothDevicesAdapter extends BaseAdapter {
 
-    public DevicesBluetoothAdapter(Context context) {
+    private final LayoutInflater mInflater;
+    private final List<BluetoothDevice> mData;
+
+    public BluetoothDevicesAdapter(Context context, List<BluetoothDevice> data) {
         mInflater = LayoutInflater.from(context);
-    }
-
-    public void setData(List<BluetoothDevice> data) {
         mData = data;
     }
 
@@ -36,8 +35,8 @@ public class DevicesBluetoothAdapter extends BaseAdapter {
         return position;
     }
 
-    @SuppressLint("MissingPermission")
     public View getView(final int position, View convertView, ViewGroup parent) {
+
         ViewHolder holder;
 
         if (convertView == null) {
@@ -45,16 +44,16 @@ public class DevicesBluetoothAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
 
-            holder.nameTv = (TextView) convertView.findViewById(R.id.textViewDeviceName);
-            holder.addressTv = (TextView) convertView.findViewById(R.id.textViewDeviceAddress);
-            //holder.pairBtn		= (Button) convertView.findViewById(R.id.btn_pair);
-
+            holder.nameTv =  convertView.findViewById(R.id.textViewDeviceName);
+            holder.addressTv =  convertView.findViewById(R.id.textViewDeviceAddress);
             convertView.setTag(holder);
+
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         BluetoothDevice device = mData.get(position);
+        @SuppressLint("MissingPermission")
         String nameDevice = (device.getName() == null) ? "Dispositivo " + position : device.getName();
         holder.nameTv.setText(nameDevice);
         holder.addressTv.setText(device.getAddress());

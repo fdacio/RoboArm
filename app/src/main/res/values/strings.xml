@@ -16,4 +16,19 @@
     <string name="servo_garra">Garra</string>
     <string name="_0angle">0°</string>
     <string name="_180angle">180°</string>
+
+    <string name="text_list_clear">Lista de Comandos Vazia</string>
+    <string name="message_search_device">Aguarde, procurando por dispositivos</string>
+    <string name="message_pair_device">Aguarde, pareando dispositivo</string>
+    <string name="dialog_negative_button">Cancelar</string>
+    <string name="dialog_neutral_button">OK</string>
+    <string name="message_despair_device">Dispositivo despareado</string>
+    <string name="message_fail_connection">Não foi possível parear com dispositivo</string>
+    <string name="message_paired_device_already_exists">Já existe um dispositivo pareado</string>
+    <string name="message_permission_important">Permissão solicitada é importante para o uso da aplicação</string>
+    <string name="message_bluetooth_activate_success">Bluetooth ativida com sucesso</string>
+    <string name="message_bluetooth_activate_important">Ativar o Bluetooth é importante para o uso da aplicação</string>
+    <string name="message_dont_device_pair">Não há dispositivo pareado</string>
+    <string name="information_commands">Informações</string>
+
 </resources>
