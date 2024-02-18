@@ -3,6 +3,7 @@
     <string name="title_bluetooth">Bluetooth</string>
     <string name="title_troca">Troca</string>
     <string name="title_roboarm">RoboArm</string>
+    <string name="title_bateria">Bateria</string>
     <string name="scan">Procurar</string>
     <string name="disconnect">Desconectar</string>
     <string name="roboarm">RoboArm</string>
@@ -16,6 +17,7 @@
     <string name="servo_garra">Garra</string>
     <string name="_0angle">0°</string>
     <string name="_180angle">180°</string>
+    <string name="button_switch_battery">Bateria</string>
 
     <string name="text_list_clear">Lista de Comandos Vazia</string>
     <string name="message_search_device">Aguarde, procurando por dispositivos</string>
@@ -30,5 +32,7 @@
     <string name="message_bluetooth_activate_important">Ativar o Bluetooth é importante para o uso da aplicação</string>
     <string name="message_dont_device_pair">Não há dispositivo pareado</string>
     <string name="information_commands">Informações</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

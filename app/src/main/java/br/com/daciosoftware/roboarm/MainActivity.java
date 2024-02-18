@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_BLUETOOTH = 2;
     private final static int REQUEST_ENABLE_BLUETOOTH = 1;
     private BluetoothManagerControl bluetoothManagerControl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_bluetooth, R.id.navigation_troca, R.id.navigation_roboarm)
+                R.id.navigation_bluetooth, R.id.navigation_troca, R.id.navigation_roboarm, R.id.navigation_bateria)
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

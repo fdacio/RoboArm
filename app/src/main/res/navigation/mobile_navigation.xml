@@ -22,4 +22,11 @@
         android:name="br.com.daciosoftware.roboarm.ui.roboarm.RoboArmFragment"
         android:label="@string/title_roboarm"
         tools:layout="@layout/fragment_roboarm" />
+
+    <fragment
+        android:id="@+id/navigation_bateria"
+        android:name="br.com.daciosoftware.roboarm.ui.bateria.BateriaFragment"
+        android:label="@string/title_bateria"
+        tools:layout="@layout/fragment_bateria" />
+
 </navigation>

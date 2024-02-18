@@ -17,22 +17,21 @@ import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
 public class TrocaFragment extends Fragment {
 
-    private Context mContext;
+    private Context appContext;
 
     private BluetoothManagerControl bluetoothManagerControl;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mContext = context;
+        appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
 
-        View root = inflater.inflate(R.layout.fragment_comandos, container, false);
+        View root = inflater.inflate(R.layout.fragment_troca, container, false);
 
         Button buttonStart = root.findViewById(R.id.button_start);
         Button buttonStop = root.findViewById(R.id.button_stop);
@@ -42,7 +41,7 @@ public class TrocaFragment extends Fragment {
         buttonStart.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "A\n";
@@ -52,7 +51,7 @@ public class TrocaFragment extends Fragment {
         buttonStop.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "B\n";
@@ -62,7 +61,7 @@ public class TrocaFragment extends Fragment {
         buttonSpeed1.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "C\n";
@@ -72,7 +71,7 @@ public class TrocaFragment extends Fragment {
         buttonSpeed2.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(mContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "D\n";

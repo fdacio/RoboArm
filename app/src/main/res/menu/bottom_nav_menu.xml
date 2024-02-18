@@ -8,12 +8,17 @@
 
     <item
         android:id="@+id/navigation_troca"
-        android:icon="@drawable/ic_baseline_call_split_24"
+        android:icon="@drawable/ic_baseline_troca_24"
         android:title="@string/title_troca" />
 
     <item
         android:id="@+id/navigation_roboarm"
         android:icon="@drawable/ic_baseline_roboarm_24"
         android:title="@string/title_roboarm" />
+
+    <item
+        android:id="@+id/navigation_bateria"
+        android:icon="@drawable/ic_baseline_battery_24"
+        android:title="@string/title_bateria" />
 
 </menu>
