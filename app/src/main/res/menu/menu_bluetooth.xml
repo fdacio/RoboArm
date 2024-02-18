@@ -9,7 +9,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_bluetooth_disconnect"
-        android:icon="@drawable/ic_baseline_bluetooth_white_disabled_24"
+        android:icon="@drawable/ic_baseline_bluetooth_disabled_24"
         android:title="@string/disconnect"
         app:showAsAction="ifRoom"/>
 

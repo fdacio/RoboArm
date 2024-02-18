@@ -65,6 +65,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_roboarm"/>
+        app:srcCompat="@drawable/ic_baseline_roboarm_troca"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

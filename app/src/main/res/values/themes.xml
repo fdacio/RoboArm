@@ -17,5 +17,6 @@
         <!-- Customize your theme here. -->
         <item name="android:actionMenuTextColor">@color/black</item>
         <item name="titleTextColor">#FFE300</item>
+        <item name="subtitleTextColor">#FFE300</item>
     </style>
 </resources>

@@ -18,8 +18,9 @@ import java.util.Locale;
 
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
+import br.com.daciosoftware.roboarm.ui.bateria.BateriaFragment;
 
-public class RoboArmFragment extends Fragment {
+public class RoboArmFragment extends Fragment implements BluetoothManagerControl.ConnectionDataReceive {
 
     private Context appContext;
     private SeekBar seekBarServoBase;
@@ -28,7 +29,7 @@ public class RoboArmFragment extends Fragment {
     private SeekBar seekBarServoGarra;
 
     public static final String SHARED_PREF = "RoboArm";
-    public static final String BASE= "base";
+    public static final String BASE = "base";
     public static final String ALTURA = "altura";
     public static final String ANGULO = "angulo";
     public static final String GARRA = "garra";
@@ -40,6 +41,7 @@ public class RoboArmFragment extends Fragment {
         super.onAttach(context);
         appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
+        bluetoothManagerControl.setListenerConnectionDataReceive(RoboArmFragment.this);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,11 +58,11 @@ public class RoboArmFragment extends Fragment {
         TextView textViewValorAngulo = root.findViewById(R.id.textViewValorAngulo);
         TextView textViewValorGarra = root.findViewById(R.id.textViewValorGarra);
 
-        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, 0);
+/*        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, 0);
         seekBarServoBase.setProgress(sharedPreferences.getInt(BASE, 0));
         seekBarServoAltura.setProgress(sharedPreferences.getInt(ALTURA, 180));
         seekBarServoAngulo.setProgress(sharedPreferences.getInt(ANGULO, 70));
-        seekBarServoGarra.setProgress(sharedPreferences.getInt(GARRA, 180));
+        seekBarServoGarra.setProgress(sharedPreferences.getInt(GARRA, 180));*/
 
         seekBarServoBase.setOnSeekBarChangeListener(new SeekBarChange(textViewValorBase));
         seekBarServoAltura.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAltura));
@@ -79,7 +81,7 @@ public class RoboArmFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        int servoBase = seekBarServoBase.getProgress();
+/*        int servoBase = seekBarServoBase.getProgress();
         int servoAltura= seekBarServoAltura.getProgress();
         int servoAngulo = seekBarServoAngulo.getProgress();
         int servoGarra = seekBarServoGarra.getProgress();
@@ -89,13 +91,40 @@ public class RoboArmFragment extends Fragment {
         editor.putInt(ALTURA, servoAltura);
         editor.putInt(ANGULO, servoAngulo);
         editor.putInt(GARRA, servoGarra);
-        editor.apply();
+        editor.apply();*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
         bluetoothManagerControl.write(String.format("%s\n", "F2").getBytes());
+    }
+
+    @Override
+    public void postDataReceived(String dataReceived) {
+        if (dataReceived.contains("ANGULOS")) {
+
+            String[] angulos = dataReceived.split("-");
+            String anguloBase = angulos[0];
+            String anguloAltura = angulos[1];
+            String anguloAngulo = angulos[2];
+            String anguloGarra = angulos[3];
+
+            String[] dataAnguloBase = anguloBase.split(";");
+            String[] dataAnguloAltura = anguloAltura.split(";");
+            String[] dataAnguloAngulo = anguloAngulo.split(";");
+            String[] dataAnguloGarra = anguloGarra.split(";");
+
+            Integer valorAnguloBase = Integer.valueOf(dataAnguloBase[1]);
+            Integer valorAnguloAltura = Integer.valueOf(dataAnguloAltura[1]);
+            Integer valorAnguloAngulo = Integer.valueOf(dataAnguloAngulo[1]);
+            Integer valorAnguloGarra = Integer.valueOf(dataAnguloGarra[1]);
+
+            seekBarServoBase.setProgress(valorAnguloBase);
+            seekBarServoAltura.setProgress(valorAnguloAltura);
+            seekBarServoAngulo.setProgress(valorAnguloAngulo);
+            seekBarServoGarra.setProgress(valorAnguloGarra);
+        }
     }
 
     private class SeekBarChange implements SeekBar.OnSeekBarChangeListener {
@@ -105,9 +134,10 @@ public class RoboArmFragment extends Fragment {
         public SeekBarChange(TextView text) {
             this.text = text;
         }
+
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            this.text.setText( String.format(Locale.getDefault(), "%dº", progress));
+            this.text.setText(String.format(Locale.getDefault(), "%dº", progress));
         }
 
         @Override
@@ -136,7 +166,7 @@ public class RoboArmFragment extends Fragment {
             }
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
 
-            if (devicePaired  == null) {
+            if (devicePaired == null) {
                 Toast.makeText(appContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
                 return;
             }

@@ -179,11 +179,5 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         alertDialogProgressPairDevice.dismiss();
     }
 
-    @Override
-    public void postDataReceived(String dataReceived) {
-        AppCompatActivity activity = (AppCompatActivity) appContext;
-        String textSubtitle = activity.getSupportActionBar().getSubtitle().toString();
-        activity.getSupportActionBar().setSubtitle(textSubtitle + "Bateria: "+ dataReceived);
-        activity.invalidateOptionsMenu();
-    }
+
 }

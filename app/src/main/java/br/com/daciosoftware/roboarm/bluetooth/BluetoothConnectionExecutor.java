@@ -151,7 +151,10 @@ public class BluetoothConnectionExecutor {
                                     }
                                     if (dataReceived.length() > 0) {
                                         handlerDataReceived.post(() -> {
-                                            mmBluetoothManagerControl.getListenerConnectionDevice().postDataReceived(dataReceived.toString());
+                                            BluetoothManagerControl.ConnectionDataReceive listenerDataReceive = mmBluetoothManagerControl.getListenerConnectionDataReceive();
+                                            if (listenerDataReceive != null) {
+                                                listenerDataReceive.postDataReceived(dataReceived.toString());
+                                            }
                                         });
                                     }
                                 }
@@ -187,7 +190,7 @@ public class BluetoothConnectionExecutor {
                                     leitura.append((char) buffer[i]);
                                 } else {
                                     if (leitura.length() > 0) {
-                                        mmBluetoothManagerControl.getListenerConnectionDevice().postDataReceived(leitura.toString());
+                                        mmBluetoothManagerControl.getListenerConnectionDataReceive().postDataReceived(leitura.toString());
                                     }
                                     break;
                                 }

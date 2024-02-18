@@ -27,6 +27,7 @@ public class BluetoothManagerControl {
     private BluetoothBroadcastReceive bluetoothBroadcastReceiver;
     private DiscoveryDevices listenerDiscoveryDevices;
     private ConnectionDevice listenerConnection;
+    private ConnectionDataReceive listenerConnectionDataReceive;
     private final Context appContext;
 
     private static BluetoothManagerControl bluetoothManagerControl;
@@ -73,6 +74,14 @@ public class BluetoothManagerControl {
 
     public void setListenerConnectionDevice(ConnectionDevice listenerConnection) {
         this.listenerConnection = listenerConnection;
+    }
+
+    public ConnectionDataReceive getListenerConnectionDataReceive() {
+        return listenerConnectionDataReceive;
+    }
+
+    public void setListenerConnectionDataReceive(ConnectionDataReceive listenerConnectionDataReceive) {
+        this.listenerConnectionDataReceive = listenerConnectionDataReceive;
     }
 
     @SuppressLint("MissingPermission")
@@ -221,7 +230,11 @@ public class BluetoothManagerControl {
         void postDeviceConnection();
         void postDeviceDisconnection();
         void postFailConnection();
+    }
+
+    public interface ConnectionDataReceive {
         void postDataReceived(String dataReceived);
+
     }
 
 }
