@@ -41,7 +41,7 @@ public class TrocaFragment extends Fragment {
         buttonStart.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "A\n";
@@ -51,7 +51,7 @@ public class TrocaFragment extends Fragment {
         buttonStop.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "B\n";
@@ -61,7 +61,7 @@ public class TrocaFragment extends Fragment {
         buttonSpeed1.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "C\n";
@@ -71,7 +71,7 @@ public class TrocaFragment extends Fragment {
         buttonSpeed2.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
-                Toast.makeText(appContext, "Não há dispositivo pareado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();
                 return;
             }
             String command = "D\n";

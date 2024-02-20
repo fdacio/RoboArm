@@ -2,7 +2,6 @@ package br.com.daciosoftware.roboarm.ui.roboarm;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import java.util.Locale;
 
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
-import br.com.daciosoftware.roboarm.ui.bateria.BateriaFragment;
 
 public class RoboArmFragment extends Fragment implements BluetoothManagerControl.ConnectionDataReceive {
 
@@ -58,12 +56,6 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         TextView textViewValorAngulo = root.findViewById(R.id.textViewValorAngulo);
         TextView textViewValorGarra = root.findViewById(R.id.textViewValorGarra);
 
-/*        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, 0);
-        seekBarServoBase.setProgress(sharedPreferences.getInt(BASE, 0));
-        seekBarServoAltura.setProgress(sharedPreferences.getInt(ALTURA, 180));
-        seekBarServoAngulo.setProgress(sharedPreferences.getInt(ANGULO, 70));
-        seekBarServoGarra.setProgress(sharedPreferences.getInt(GARRA, 180));*/
-
         seekBarServoBase.setOnSeekBarChangeListener(new SeekBarChange(textViewValorBase));
         seekBarServoAltura.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAltura));
         seekBarServoAngulo.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAngulo));
@@ -77,23 +69,6 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         return root;
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-/*        int servoBase = seekBarServoBase.getProgress();
-        int servoAltura= seekBarServoAltura.getProgress();
-        int servoAngulo = seekBarServoAngulo.getProgress();
-        int servoGarra = seekBarServoGarra.getProgress();
-        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(BASE, servoBase);
-        editor.putInt(ALTURA, servoAltura);
-        editor.putInt(ANGULO, servoAngulo);
-        editor.putInt(GARRA, servoGarra);
-        editor.apply();*/
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -102,6 +77,7 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
 
     @Override
     public void postDataReceived(String dataReceived) {
+
         if (dataReceived.contains("ANGULOS")) {
 
             String[] angulos = dataReceived.split("-");
@@ -164,10 +140,10 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
             if (seekBar.getId() == R.id.seekBarServoGarra) {
                 command = String.format(Locale.getDefault(), "gr%d\n", seekBar.getProgress());
             }
-            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
 
+            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired == null) {
-                Toast.makeText(appContext, "Não há dispositivo conectado", Toast.LENGTH_LONG).show();
+                Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();
                 return;
             }
             bluetoothManagerControl.write(command.getBytes());

@@ -35,9 +35,7 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_bateria, container, false);
 
@@ -50,7 +48,7 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
             bluetoothManagerControl.write(command.getBytes());
         });
 
-        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, 0);
+        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         int switchBattery = sharedPreferences.getInt(SWITCH_BATTERY, 0);
         switchCompat.setChecked((switchBattery) == 0 ? false : true);
 
@@ -63,7 +61,9 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
         SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(SWITCH_BATTERY, (switchCompat.isChecked()) ? 1 : 0);
+        editor.apply();
     }
+
     @Override
     public void postDataReceived(String dataReceived) {
         if (dataReceived.contains("BAT")) {
