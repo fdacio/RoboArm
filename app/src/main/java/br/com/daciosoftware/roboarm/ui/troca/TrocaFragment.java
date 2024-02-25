@@ -16,9 +16,7 @@ import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
 public class TrocaFragment extends Fragment {
-
     private Context appContext;
-
     private BluetoothManagerControl bluetoothManagerControl;
 
     @Override
@@ -28,8 +26,7 @@ public class TrocaFragment extends Fragment {
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_troca, container, false);
 

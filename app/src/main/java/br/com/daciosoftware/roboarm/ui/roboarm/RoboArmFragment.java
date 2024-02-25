@@ -104,9 +104,7 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
     }
 
     private class SeekBarChange implements SeekBar.OnSeekBarChangeListener {
-
         private final TextView text;
-
         public SeekBarChange(TextView text) {
             this.text = text;
         }
@@ -115,17 +113,14 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             this.text.setText(String.format(Locale.getDefault(), "%dº", progress));
         }
-
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
 
         }
-
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             sendData(seekBar);
         }
-
         private void sendData(SeekBar seekBar) {
             String command = "";
             if (seekBar.getId() == R.id.seekBarServoBase) {
@@ -140,7 +135,6 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
             if (seekBar.getId() == R.id.seekBarServoGarra) {
                 command = String.format(Locale.getDefault(), "gr%d\n", seekBar.getProgress());
             }
-
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired == null) {
                 Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();

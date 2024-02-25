@@ -18,9 +18,9 @@ import java.util.Locale;
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
-public class BateriaFragment extends Fragment implements BluetoothManagerControl.ConnectionDataReceive{
+public class BateriaFragment extends Fragment implements BluetoothManagerControl.ConnectionDataReceive {
     private static final String SHARED_PREF = "RoboArm";
-    private static final String SWITCH_BATTERY= "SwitchBateria";
+    private static final String SWITCH_BATTERY = "SwitchBateria";
     private Context appContext;
     private BluetoothManagerControl bluetoothManagerControl;
     private SwitchCompat switchCompat;
@@ -35,7 +35,7 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_bateria, container, false);
 
