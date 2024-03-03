@@ -1,5 +1,6 @@
 package br.com.daciosoftware.roboarm.ui.troca;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,25 +11,30 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
+import br.com.daciosoftware.roboarm.ui.bluetooth.BluetoothFragment;
 
-public class TrocaFragment extends Fragment {
+public class TrocaFragment extends Fragment implements BluetoothManagerControl.ConnectionDevice {
     private Context appContext;
     private BluetoothManagerControl bluetoothManagerControl;
-
+    private Toolbar toolbar;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
+        bluetoothManagerControl.setListenerConnectionDevice(TrocaFragment.this);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_troca, container, false);
+
+        toolbar = root.findViewById(R.id.toolbarTroca);
 
         Button buttonStart = root.findViewById(R.id.button_start);
         Button buttonStop = root.findViewById(R.id.button_stop);
@@ -74,13 +80,43 @@ public class TrocaFragment extends Fragment {
             String command = "D\n";
             bluetoothManagerControl.write(command.getBytes());
         });
-
+        updateStatusDevicePaired();
         return root;
     }
-
+    @SuppressLint({"MissingPermission"})
+    private void updateStatusDevicePaired() {
+        BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+        toolbar.setSubtitle((devicePaired != null) ? devicePaired.getName() : null);
+    }
     @Override
     public void onResume() {
         super.onResume();
         bluetoothManagerControl.write(String.format("%s\n", "F1").getBytes());
+    }
+
+    @Override
+    public void initConnection(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void postDeviceConnection(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void postDeviceDisconnection() {
+        Toast.makeText(appContext, R.string.message_despair_device, Toast.LENGTH_SHORT).show();
+        updateStatusDevicePaired();
+    }
+
+    @Override
+    public void postFailConnection(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void postDataReceived(String dataReceived) {
+
     }
 }
