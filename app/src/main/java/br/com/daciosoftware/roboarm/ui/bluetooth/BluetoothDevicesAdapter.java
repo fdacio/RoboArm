@@ -1,4 +1,4 @@
-package br.com.daciosoftware.roboarm.ui.bluetotooth;
+package br.com.daciosoftware.roboarm.ui.bluetooth;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;

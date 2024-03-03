@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_bluetooth"
-        android:name="br.com.daciosoftware.roboarm.ui.bluetotooth.BluetoothFragment"
+        android:name="br.com.daciosoftware.roboarm.ui.bluetooth.BluetoothFragment"
         android:label="@string/title_bluetooth"
         tools:layout="@layout/fragment_bluetooth" />
 

@@ -10,11 +10,9 @@ import androidx.annotation.NonNull;
 
 public class BluetoothBroadcastReceive extends BroadcastReceiver {
 
-    private final Context appContext;
     private final BluetoothManagerControl.DiscoveryDevices listenerDiscoveryDevices;
 
-    public BluetoothBroadcastReceive (Context context, @NonNull BluetoothManagerControl.DiscoveryDevices listenerDiscoveryDevices ) {
-        this.appContext = context;
+    public BluetoothBroadcastReceive (@NonNull BluetoothManagerControl.DiscoveryDevices listenerDiscoveryDevices ) {
         this.listenerDiscoveryDevices = listenerDiscoveryDevices;
     }
 
@@ -28,6 +26,10 @@ public class BluetoothBroadcastReceive extends BroadcastReceiver {
         } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
             BluetoothDevice device =  intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             listenerDiscoveryDevices.foundDevice(device);
+        } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+            //listenerConnectionDevice.postDeviceDisconnection();
+        } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+            //listenerConnectionDevice.postDeviceConnection();
         }
     }
 

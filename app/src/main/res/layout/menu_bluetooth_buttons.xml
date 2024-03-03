@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:paddingHorizontal="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Botão de Procurar por dispositivos -->
+    <LinearLayout
+        android:id="@+id/action_button_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        tools:ignore="UseCompoundDrawables">
+            <ImageView
+                android:layout_width="24sp"
+                android:layout_height="24sp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/button_menu"
+                android:contentDescription="@string/device"
+                android:src="@drawable/ic_baseline_bluetooth_searching_24" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/scan"
+                android:textColor="@color/white"/>
+
+    </LinearLayout>
+    <!-- Botão de Disconetar -->
+    <LinearLayout
+        android:id="@+id/action_button_disconnect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_marginEnd="4dp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:clickable="true"
+        tools:ignore="UseCompoundDrawables">
+        <ImageView
+            android:layout_width="24sp"
+            android:layout_height="24sp"
+            android:layout_marginEnd="4dp"
+            android:background="@color/button_menu"
+            android:contentDescription="@string/device"
+            android:src="@drawable/ic_baseline_bluetooth_disabled_24" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disconnect"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

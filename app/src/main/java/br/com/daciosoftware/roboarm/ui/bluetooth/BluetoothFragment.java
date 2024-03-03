@@ -1,13 +1,10 @@
-package br.com.daciosoftware.roboarm.ui.bluetotooth;
+package br.com.daciosoftware.roboarm.ui.bluetooth;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,13 +12,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.daciosoftware.roboarm.R;
+import br.com.daciosoftware.roboarm.alertdialog.AlertDialogDevicePaired;
+import br.com.daciosoftware.roboarm.alertdialog.AlertDialogDevicePairing;
 import br.com.daciosoftware.roboarm.alertdialog.AlertDialogProgress;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
@@ -29,90 +28,58 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
 
     private List<BluetoothDevice> listDevices = new ArrayList<>();
     private ListView listViewDevices;
+    private Context appContext;
+    private Toolbar toolbar;
+    private View buttonSearch;
+    private View buttonDisconnect;
     private BluetoothManagerControl bluetoothManagerControl;
     private AlertDialogProgress alertDialogProgressStartDiscovery;
-    private AlertDialogProgress alertDialogProgressPairDevice;
-    private Context appContext;
-    private Menu menuBluetooth;
+    private AlertDialogDevicePairing alertDialogProgressPairDevice;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         appContext = context;
+
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
         bluetoothManagerControl.setListenerDiscoveryDevices(BluetoothFragment.this);
         bluetoothManagerControl.setListenerConnectionDevice(BluetoothFragment.this);
 
         alertDialogProgressStartDiscovery = new AlertDialogProgress(context, AlertDialogProgress.TypeDialog.SEARCH_DEVICE);
-        alertDialogProgressPairDevice = new AlertDialogProgress(context, AlertDialogProgress.TypeDialog.PAIR_DEVICE);
-
+        alertDialogProgressPairDevice = new AlertDialogDevicePairing(context);
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true); // Torna o menu action bar visivel;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        super.onCreateView(inflater, container, savedInstanceState);
 
         View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
+
+        toolbar = root.findViewById(R.id.toolbarBluetooth);
+
+        buttonSearch = root.findViewById(R.id.action_button_search);
+        buttonDisconnect = root.findViewById(R.id.action_button_disconnect);
+
+        buttonSearch.setOnClickListener((v) -> bluetoothManagerControl.initDiscovery());
+        buttonDisconnect.setOnClickListener((v) -> bluetoothManagerControl.disconnect());
 
         listViewDevices = root.findViewById(R.id.listViewDevices);
         listViewDevices.setOnItemClickListener(this);
 
         return root;
-
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_bluetooth, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_bluetooth_discovery: {
-                bluetoothManagerControl.initDiscovery();
-                return true;
-            }
-            case R.id.action_bluetooth_disconnect: {
-                bluetoothManagerControl.disconnect();
-                return true;
-            }
-            default:
-                return false;
-        }
-
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menuBluetooth = menu;
-        updateMenuBluetooth();
     }
 
     @SuppressLint({"MissingPermission"})
     private void updateMenuBluetooth() {
-        if (menuBluetooth != null) {
-            BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
-            MenuItem itemDisconnect = menuBluetooth.findItem(R.id.action_bluetooth_disconnect);
-            MenuItem itemDiscovery = menuBluetooth.findItem(R.id.action_bluetooth_discovery);
-            if (itemDisconnect != null) {
-                itemDisconnect.setVisible(devicePaired != null);
-            }
-            if (itemDiscovery != null) {
-                itemDiscovery.setVisible(devicePaired == null);
-            }
-            AppCompatActivity activity = (AppCompatActivity) appContext;
-            String message = ((devicePaired != null) ? devicePaired.getName() : null);
-            activity.getSupportActionBar().setSubtitle(message);
-            activity.invalidateOptionsMenu();
-        }
+        BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+        buttonDisconnect.setVisibility((devicePaired != null) ? View.VISIBLE : View.GONE);
+        buttonSearch.setVisibility((devicePaired == null) ? View.VISIBLE : View.GONE);
+        toolbar.setSubtitle((devicePaired != null) ? devicePaired.getName() : null);
     }
 
     @SuppressLint({"MissingPermission"})
     private void loadDevicesBonded() {
-        if (listDevices.size() == 0 ) {
-            listDevices = bluetoothManagerControl.getBoundedDevices();
-        }
+        listDevices = bluetoothManagerControl.getBoundedDevices();
         BluetoothDevicesAdapter devicesBluetoothAdapter = new BluetoothDevicesAdapter(appContext, listDevices);
         listViewDevices.setAdapter(devicesBluetoothAdapter);
     }
@@ -120,11 +87,10 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onResume() {
         super.onResume();
+        updateMenuBluetooth();
         loadDevicesBonded();
-        //updateMenuBluetooth();
     }
 
-    //Pareamento de dispositivos no click do item da listview
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //Pareamento de dispositivos no click do item da listview
@@ -156,15 +122,19 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
-    public void initConnection() {
-        alertDialogProgressPairDevice.show();
+    public void initConnection(BluetoothDevice device) {
+        alertDialogProgressPairDevice.show(device.getName());
     }
 
+    @SuppressLint("MissingPermission")
     @Override
-    public void postDeviceConnection() {
-        updateMenuBluetooth();
+    public void postDeviceConnection(BluetoothDevice device) {
         alertDialogProgressPairDevice.dismiss();
+        AlertDialogDevicePaired alertDialogDevicePaired = new AlertDialogDevicePaired(appContext, AlertDialogDevicePaired.TypeDialog.SUCCESS_PAIR);
+        alertDialogDevicePaired.show(device.getName());
+        updateMenuBluetooth();
     }
 
     @Override
@@ -173,11 +143,17 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         updateMenuBluetooth();
     }
 
+    @SuppressLint("MissingPermission")
     @Override
-    public void postFailConnection() {
-        Toast.makeText(appContext, R.string.message_fail_connection, Toast.LENGTH_SHORT).show();
+    public void postFailConnection(BluetoothDevice device) {
         alertDialogProgressPairDevice.dismiss();
+        AlertDialogDevicePaired alertDialogDevicePaired = new AlertDialogDevicePaired(appContext, AlertDialogDevicePaired.TypeDialog.FAIL_PAIR);
+        alertDialogDevicePaired.show(device.getName());
+
     }
 
+    @Override
+    public void postDataReceived(String dataReceived) {
+    }
 
 }

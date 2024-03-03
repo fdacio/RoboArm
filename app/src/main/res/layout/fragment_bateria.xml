@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.bateria.BateriaFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarBateria"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="@string/title_bateria"
+        app:subtitleTextColor="@color/yellow_app"
+        app:titleTextColor="@color/yellow_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switchBattery"
@@ -19,14 +31,13 @@
         android:scaleY="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarBateria" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="350sp"
         android:layout_height="350sp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:contentDescription="@string/title_bateria"

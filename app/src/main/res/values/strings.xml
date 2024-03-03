@@ -5,6 +5,7 @@
     <string name="title_roboarm">RoboArm</string>
     <string name="title_bateria">Bateria</string>
     <string name="scan">Procurar</string>
+    <string name="device">Dispositivo</string>
     <string name="disconnect">Desconectar</string>
     <string name="roboarm">RoboArm</string>
     <string name="button_start">Start</string>
@@ -25,12 +26,13 @@
     <string name="dialog_negative_button">Cancelar</string>
     <string name="dialog_neutral_button">OK</string>
     <string name="message_despair_device">Dispositivo despareado</string>
-    <string name="message_fail_connection">Não foi possível parear com dispositivo</string>
     <string name="message_paired_device_already_exists">Já existe um dispositivo pareado</string>
     <string name="message_permission_important">Permissão solicitada é importante para o uso da aplicação</string>
     <string name="message_bluetooth_activate_success">Bluetooth ativida com sucesso</string>
     <string name="message_bluetooth_activate_important">Ativar o Bluetooth é importante para o uso da aplicação</string>
     <string name="message_dont_device_pair">Não há dispositivo pareado</string>
+    <string name="message_pair_device_success">Dispositivo pareado com sucesso</string>
+    <string name="message_fail_connection">Não foi possível parear com dispositivo</string>
     <string name="information_commands">Informações</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

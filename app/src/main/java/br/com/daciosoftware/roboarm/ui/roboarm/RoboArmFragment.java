@@ -1,5 +1,6 @@
 package br.com.daciosoftware.roboarm.ui.roboarm;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
@@ -18,7 +21,7 @@ import java.util.Locale;
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
-public class RoboArmFragment extends Fragment implements BluetoothManagerControl.ConnectionDataReceive {
+public class RoboArmFragment extends Fragment implements BluetoothManagerControl.ConnectionDevice {
 
     private Context appContext;
     private SeekBar seekBarServoBase;
@@ -26,11 +29,7 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
     private SeekBar seekBarServoAngulo;
     private SeekBar seekBarServoGarra;
 
-    public static final String SHARED_PREF = "RoboArm";
-    public static final String BASE = "base";
-    public static final String ALTURA = "altura";
-    public static final String ANGULO = "angulo";
-    public static final String GARRA = "garra";
+    private Toolbar toolbar;
 
     private BluetoothManagerControl bluetoothManagerControl;
 
@@ -39,12 +38,14 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         super.onAttach(context);
         appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
-        bluetoothManagerControl.setListenerConnectionDataReceive(RoboArmFragment.this);
+        bluetoothManagerControl.setListenerConnectionDevice(RoboArmFragment.this);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_roboarm, container, false);
+
+        toolbar = root.findViewById(R.id.toolbarRoboarm);
 
         seekBarServoBase = root.findViewById(R.id.seekBarServoBase);
         seekBarServoAltura = root.findViewById(R.id.seekBarServoAltura);
@@ -66,13 +67,42 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         textViewValorAngulo.setText(String.format(Locale.getDefault(), "%d°", seekBarServoAngulo.getProgress()));
         textViewValorGarra.setText(String.format(Locale.getDefault(), "%d°", seekBarServoGarra.getProgress()));
 
+        updateStatusDevicePaired();
+
         return root;
+    }
+
+    @SuppressLint({"MissingPermission"})
+    private void updateStatusDevicePaired() {
+        BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
+        toolbar.setSubtitle((devicePaired != null) ? devicePaired.getName() : null);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         bluetoothManagerControl.write(String.format("%s\n", "F2").getBytes());
+    }
+
+    @Override
+    public void initConnection(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void postDeviceConnection(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void postDeviceDisconnection() {
+        Toast.makeText(appContext, R.string.message_despair_device, Toast.LENGTH_SHORT).show();
+        updateStatusDevicePaired();
+    }
+
+    @Override
+    public void postFailConnection(BluetoothDevice device) {
+
     }
 
     @Override

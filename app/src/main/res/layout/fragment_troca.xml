@@ -6,6 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".ui.troca.TrocaFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarTroca"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="@string/title_troca"
+        app:subtitleTextColor="@color/yellow_app"
+        app:titleTextColor="@color/yellow_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarTroca"
+        app:srcCompat="@drawable/ic_baseline_roboarm_troca" />
+
     <Button
         android:id="@+id/button_start"
         android:layout_width="250dp"
@@ -56,15 +80,5 @@
         app:layout_constraintTop_toBottomOf="@+id/button_speed1"
         tools:ignore="TextContrastCheck" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_roboarm_troca"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

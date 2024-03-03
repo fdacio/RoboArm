@@ -16,12 +16,11 @@ public class AlertDialogProgress  {
     public enum TypeDialog {
         SEARCH_DEVICE, PAIR_DEVICE
     }
-    private final AlertDialog.Builder builder;
     private final AlertDialog dialog;
 
     @SuppressLint("MissingPermission")
     public AlertDialogProgress(Context context, TypeDialog typeDialog) {
-        builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.app_name);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View convertView = inflater.inflate(R.layout.alert_dialog_progress,null);
