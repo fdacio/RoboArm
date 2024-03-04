@@ -17,6 +17,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchSendData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16sp"
+            android:padding="2sp"
+            android:scaleX="2"
+            android:scaleY="2"/>
+
     </androidx.appcompat.widget.Toolbar>
 
     <TextView

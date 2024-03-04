@@ -31,7 +31,6 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
     private TextView textViewPercBateria;
     private Toolbar toolbar;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -51,8 +50,8 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
         textViewPercBateria = root.findViewById(R.id.textViewPercBateria);
         textViewPercBateria.setVisibility(View.INVISIBLE);
         switchBateria.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            String command = (isChecked) ? "BTS\n" : "BTN\n";
             textViewPercBateria.setVisibility((isChecked) ? View.VISIBLE : View.INVISIBLE);
+            String command = (isChecked) ? "BTS\n" : "BTN\n";
             bluetoothManagerControl.write(command.getBytes());
         });
 
@@ -61,6 +60,7 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
         switchBateria.setChecked((switchBattery) != 0);
 
         updateStatusDevicePaired();
+        bluetoothManagerControl.write(String.format("%s\n", "F3").getBytes());
 
         return root;
     }
@@ -73,8 +73,6 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
     @Override
     public void onResume() {
         super.onResume();
-        String command = (switchBateria.isChecked()) ? "BTS" : "BTN";
-        bluetoothManagerControl.write(String.format("%s\n", command).getBytes());
     }
 
     @Override
@@ -109,9 +107,9 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
 
     @Override
     public void postDataReceived(String dataReceived) {
-        if (dataReceived.contains("BAT")) {
-            String[] data = dataReceived.split(";");
-            textViewPercBateria.setText(String.format(Locale.getDefault(), "%s%%", data[1]));
+        if (dataReceived.contains("bat")) {
+            String perc = dataReceived.substring(3);
+            textViewPercBateria.setText(String.format(Locale.getDefault(), "%s%%", perc));
         }
     }
 }

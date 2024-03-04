@@ -80,7 +80,9 @@ public class TrocaFragment extends Fragment implements BluetoothManagerControl.C
             String command = "D\n";
             bluetoothManagerControl.write(command.getBytes());
         });
+
         updateStatusDevicePaired();
+        bluetoothManagerControl.write(String.format("%s\n", "F1").getBytes());
         return root;
     }
     @SuppressLint({"MissingPermission"})
@@ -91,7 +93,6 @@ public class TrocaFragment extends Fragment implements BluetoothManagerControl.C
     @Override
     public void onResume() {
         super.onResume();
-        bluetoothManagerControl.write(String.format("%s\n", "F1").getBytes());
     }
 
     @Override
