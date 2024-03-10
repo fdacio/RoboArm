@@ -60,11 +60,10 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
             ((MainActivity)appContext).setSwitchBattery(switchBateria.isChecked());
         });
 
-            switchBateria.setChecked(((MainActivity)appContext).getSwitchBattery());
-
-
         updateStatusDevicePaired();
+
         bluetoothManagerControl.write(String.format("%s\n", "F3").getBytes());
+        switchBateria.setChecked(((MainActivity)appContext).getSwitchBattery());
 
         return root;
     }
