@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import br.com.daciosoftware.roboarm.MainActivity;
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
 
@@ -48,16 +49,19 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
 
         switchBateria = root.findViewById(R.id.switchBattery);
         textViewPercBateria = root.findViewById(R.id.textViewPercBateria);
-        textViewPercBateria.setVisibility(View.INVISIBLE);
         switchBateria.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            textViewPercBateria.setVisibility((isChecked) ? View.VISIBLE : View.INVISIBLE);
             String command = (isChecked) ? "BTS\n" : "BTN\n";
             bluetoothManagerControl.write(command.getBytes());
+            if (switchBateria.isChecked()) {
+                switchBateria.setText(R.string.text_switch_battery);
+            } else {
+                switchBateria.setText(R.string.text_switch_fonte);
+            }
+            ((MainActivity)appContext).setSwitchBattery(switchBateria.isChecked());
         });
 
-        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        int switchBattery = sharedPreferences.getInt(SWITCH_BATTERY, 0);
-        switchBateria.setChecked((switchBattery) != 0);
+            switchBateria.setChecked(((MainActivity)appContext).getSwitchBattery());
+
 
         updateStatusDevicePaired();
         bluetoothManagerControl.write(String.format("%s\n", "F3").getBytes());
@@ -78,10 +82,6 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        SharedPreferences sharedPreferences = appContext.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(SWITCH_BATTERY, (switchBateria.isChecked()) ? 1 : 0);
-        editor.apply();
     }
 
     @Override

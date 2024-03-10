@@ -37,5 +37,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_perc_bateria">100%</string>
+    <string name="_0perc">0%</string>
+    <string name="text_switch_fonte">Fonte</string>
+    <string name="text_switch_battery">Bateria</string>
+    <string name="text_name_device">Nome do Dispositivo</string>
+    <string name="text_address_device">Endereço do Dispositivo</string>
+    <string name="text_devices_header_pair">Dispositivos Salvos</string>
+    <string name="text_devices_header_found">Dispositivos Encontrados</string>
 
 </resources>

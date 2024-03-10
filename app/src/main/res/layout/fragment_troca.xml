@@ -17,6 +17,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            layout="@layout/toolbar_bateria"/>
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView

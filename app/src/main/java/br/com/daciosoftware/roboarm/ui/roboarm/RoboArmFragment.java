@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +30,9 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
     private SeekBar seekBarServoAngulo;
     private SeekBar seekBarServoGarra;
     private Toolbar toolbar;
-    private BluetoothManagerControl bluetoothManagerControl;
+    private TextView textViewPercBateria;
     private SwitchCompat switchSendData;
+    private BluetoothManagerControl bluetoothManagerControl;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -63,6 +63,8 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
             String command = (isChecked) ? "sp0\n" : "sp1\n";
             bluetoothManagerControl.write(command.getBytes());
         });
+
+        textViewPercBateria = root.findViewById(R.id.textViewPercBatteryToolbar);
 
         seekBarServoBase.setOnSeekBarChangeListener(new SeekBarChange(textViewValorBase));
         seekBarServoAltura.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAltura));
@@ -134,6 +136,11 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
             seekBarServoAltura.setProgress(at);
             seekBarServoAngulo.setProgress(an);
             seekBarServoGarra.setProgress(gr);
+        }
+
+        if (dataReceived.contains("bat")) {
+            String perc = dataReceived.substring(3);
+            textViewPercBateria.setText(String.format(Locale.getDefault(), "%s%%", perc));
         }
     }
 

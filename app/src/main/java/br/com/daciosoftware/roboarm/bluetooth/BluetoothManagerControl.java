@@ -29,9 +29,7 @@ public class BluetoothManagerControl {
     private DiscoveryDevices listenerDiscoveryDevices;
     private ConnectionDevice listenerConnection;
     private final Context appContext;
-
     private static BluetoothManagerControl bluetoothManagerControl;
-
     private final BluetoothConnectionExecutor bluetoothConnectionExecutor;
 
     private BluetoothManagerControl(Context context) {
@@ -95,6 +93,7 @@ public class BluetoothManagerControl {
 
         }
         BluetoothManager bluetoothManager = (BluetoothManager) appContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothManager.getAdapter().cancelDiscovery();
         bluetoothManager.getAdapter().startDiscovery();
     }
 

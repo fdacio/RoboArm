@@ -104,7 +104,6 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void initDiscoveryDevices() {
-        listDevices.clear();
         alertDialogProgressStartDiscovery.show();
     }
 
@@ -117,9 +116,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void foundDevice(BluetoothDevice device) {
-        if (!listDevices.contains(device)) {
-            listDevices.add(device);
-        }
+        if (!listDevices.contains(device)) listDevices.add(device);
     }
 
     @SuppressLint("MissingPermission")
@@ -134,6 +131,7 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         alertDialogProgressPairDevice.dismiss();
         AlertDialogDevicePaired alertDialogDevicePaired = new AlertDialogDevicePaired(appContext, AlertDialogDevicePaired.TypeDialog.SUCCESS_PAIR);
         alertDialogDevicePaired.show(device.getName());
+        loadDevicesBonded();
         updateMenuBluetooth();
     }
 
@@ -149,7 +147,6 @@ public class BluetoothFragment extends Fragment implements AdapterView.OnItemCli
         alertDialogProgressPairDevice.dismiss();
         AlertDialogDevicePaired alertDialogDevicePaired = new AlertDialogDevicePaired(appContext, AlertDialogDevicePaired.TypeDialog.FAIL_PAIR);
         alertDialogDevicePaired.show(device.getName());
-
     }
 
     @Override

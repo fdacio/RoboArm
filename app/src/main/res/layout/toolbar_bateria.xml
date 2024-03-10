@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="8dp"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:background="@color/button_menu"
+        android:contentDescription="@string/device"
+        android:src="@drawable/ic_baseline_battery_24" />
+
+    <TextView
+        android:id="@+id/textViewPercBatteryToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="@string/text_perc_bateria"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+</LinearLayout>
