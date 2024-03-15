@@ -57,13 +57,11 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
             } else {
                 switchBateria.setText(R.string.text_switch_fonte);
             }
-            ((MainActivity)appContext).setSwitchBattery(switchBateria.isChecked());
         });
 
         updateStatusDevicePaired();
 
         bluetoothManagerControl.write(String.format("%s\n", "F3").getBytes());
-        switchBateria.setChecked(((MainActivity)appContext).getSwitchBattery());
 
         return root;
     }
@@ -109,6 +107,10 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
         if (dataReceived.contains("bat")) {
             String perc = dataReceived.substring(3);
             textViewPercBateria.setText(String.format(Locale.getDefault(), "%s%%", perc));
+        }
+        if (dataReceived.contains("bts")) {
+            String bts = dataReceived.substring(3);
+            switchBateria.setChecked(bts.equals("1"));
         }
     }
 }

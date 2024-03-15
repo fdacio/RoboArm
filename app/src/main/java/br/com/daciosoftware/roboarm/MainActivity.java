@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_BLUETOOTH = 2;
     private final static int REQUEST_ENABLE_BLUETOOTH = 1;
 
-    private Boolean switchBattery = false;
     private BluetoothManagerControl bluetoothManagerControl;
 
     @Override
@@ -75,11 +74,4 @@ public class MainActivity extends AppCompatActivity {
         bluetoothManagerControl.unregisterBluetoothBroadcastReceive();
     }
 
-    public Boolean getSwitchBattery() {
-        return switchBattery;
-    }
-
-    public void setSwitchBattery(Boolean switchBattery) {
-        this.switchBattery = switchBattery;
-    }
 }
