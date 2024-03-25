@@ -14,7 +14,7 @@
     <string name="button_speed2">Speed 2</string>
     <string name="servo_base">Base</string>
     <string name="servo_altura">Altura</string>
-    <string name="servo_angulo">Ângulo</string>
+    <string name="servo_alcance">Alcance</string>
     <string name="servo_garra">Garra</string>
     <string name="_0angle">0°</string>
     <string name="_180angle">180°</string>
@@ -36,9 +36,11 @@
     <string name="information_commands">Informações</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="text_perc_bateria">100%</string>
+    <string name="text_perc_battery">100%</string>
+    <string name="text_volt_battery">9v</string>
     <string name="_0perc">0%</string>
-    <string name="text_switch_fonte">Fonte</string>
+    <string name="_0volt">0v</string>
+    <string name="text_switch_power_supply">Fonte</string>
     <string name="text_switch_battery">Bateria</string>
     <string name="text_name_device">Nome do Dispositivo</string>
     <string name="text_address_device">Endereço do Dispositivo</string>

@@ -7,7 +7,7 @@
     tools:context=".ui.bateria.BateriaFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarBateria"
+        android:id="@+id/toolbarBattery"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -32,10 +32,10 @@
         android:scaleX="2"
         android:scaleY="2"
         android:showText="true"
-        android:text="@string/text_switch_fonte"
+        android:text="@string/text_switch_power_supply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarBateria" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarBattery" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -55,16 +55,30 @@
         app:layout_constraintVertical_bias="0.163" />
 
     <TextView
-        android:id="@+id/textViewPercBateria"
+        android:id="@+id/textViewPercBattery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_perc_bateria"
+        android:text="@string/_0perc"
         android:textAlignment="center"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.456" />
+
+    <TextView
+        android:id="@+id/textViewVoltBattery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/_0volt"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textViewPercBattery"
+        app:layout_constraintStart_toStartOf="@+id/textViewPercBattery"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPercBattery" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

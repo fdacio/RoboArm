@@ -19,13 +19,13 @@ import java.util.Locale;
 
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
-import br.com.daciosoftware.roboarm.ui.bluetooth.BluetoothFragment;
 
 public class TrocaFragment extends Fragment implements BluetoothManagerControl.ConnectionDevice {
     private Context appContext;
     private BluetoothManagerControl bluetoothManagerControl;
     private Toolbar toolbar;
-    private TextView textViewPercBateria;
+    private TextView textViewPercBattery;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -44,7 +44,7 @@ public class TrocaFragment extends Fragment implements BluetoothManagerControl.C
         Button buttonStop = root.findViewById(R.id.button_stop);
         Button buttonSpeed1 = root.findViewById(R.id.button_speed1);
         Button buttonSpeed2 = root.findViewById(R.id.button_speed2);
-        textViewPercBateria = root.findViewById(R.id.textViewPercBatteryToolbar);
+        textViewPercBattery = root.findViewById(R.id.textViewPercBatteryToolbar);
 
         buttonStart.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
@@ -123,9 +123,11 @@ public class TrocaFragment extends Fragment implements BluetoothManagerControl.C
 
     @Override
     public void postDataReceived(String dataReceived) {
-        if (dataReceived.contains("bat")) {
-            String perc = dataReceived.substring(3);
-            textViewPercBateria.setText(String.format(Locale.getDefault(), "%s%%", perc));
+        if (dataReceived.contains("bat:")) {
+            String percAndVolt = dataReceived.substring(4);
+            String[] arrayPercAndVolt = percAndVolt.split(";");
+            String perc = arrayPercAndVolt[0];
+            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", perc));
         }
     }
 }

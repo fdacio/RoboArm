@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            layout="@layout/toolbar_bateria"/>
+            layout="@layout/toolbar_battery"/>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -65,7 +65,7 @@
         android:minHeight="3dp"
         android:paddingStart="24sp"
         android:paddingEnd="24sp"
-        android:progress="1"
+        android:progress="0"
         android:progressDrawable="@drawable/seekbar_progress_drawable"
         android:thumb="@drawable/seekbar_thumb"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValorBase"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValorAnguloBase"
         tools:ignore="SpeakableTextPresentCheck"
         tools:text="@string/servo_altura" />
 
@@ -98,7 +98,7 @@
         android:minHeight="3dp"
         android:paddingStart="24sp"
         android:paddingEnd="24sp"
-        android:progress="1"
+        android:progress="0"
         android:progressDrawable="@drawable/seekbar_progress_drawable"
         android:thumb="@drawable/seekbar_thumb"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,17 +113,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/servo_base"
-        android:text="@string/servo_angulo"
+        android:text="@string/servo_alcance"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValorAltura"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValorAnguloAltura"
         tools:ignore="SpeakableTextPresentCheck"
-        tools:text="@string/servo_angulo" />
+        tools:text="@string/servo_alcance" />
 
     <SeekBar
-        android:id="@+id/seekBarServoAngulo"
+        android:id="@+id/seekBarServoAlcance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -153,7 +153,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewValorAngulo"
+        app:layout_constraintTop_toBottomOf="@+id/textViewValorAnguloAlcance"
         tools:ignore="SpeakableTextPresentCheck"
         tools:text="@string/servo_garra" />
 
@@ -220,7 +220,7 @@
         android:layout_marginStart="32dp"
         android:text="@string/_0angle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBarServoAngulo" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBarServoAlcance" />
 
     <TextView
         android:id="@+id/textView6"
@@ -238,7 +238,7 @@
         android:layout_marginEnd="32dp"
         android:text="@string/_180angle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBarServoAngulo" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBarServoAlcance" />
 
     <TextView
         android:id="@+id/textView8"
@@ -250,7 +250,7 @@
         app:layout_constraintTop_toBottomOf="@+id/seekBarServoGarra" />
 
     <TextView
-        android:id="@+id/textViewValorBase"
+        android:id="@+id/textViewValorAnguloBase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -264,7 +264,7 @@
         app:layout_constraintTop_toBottomOf="@+id/seekBarServoBase" />
 
     <TextView
-        android:id="@+id/textViewValorAltura"
+        android:id="@+id/textViewValorAnguloAltura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -278,7 +278,7 @@
         app:layout_constraintTop_toBottomOf="@+id/seekBarServoAltura" />
 
     <TextView
-        android:id="@+id/textViewValorAngulo"
+        android:id="@+id/textViewValorAnguloAlcance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -289,10 +289,10 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBarServoAngulo" />
+        app:layout_constraintTop_toBottomOf="@+id/seekBarServoAlcance" />
 
     <TextView
-        android:id="@+id/textViewValorGarra"
+        android:id="@+id/textViewValorAnguloGarra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

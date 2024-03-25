@@ -27,10 +27,10 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
     private Context appContext;
     private SeekBar seekBarServoBase;
     private SeekBar seekBarServoAltura;
-    private SeekBar seekBarServoAngulo;
+    private SeekBar seekBarServoAlcance;
     private SeekBar seekBarServoGarra;
     private Toolbar toolbar;
-    private TextView textViewPercBateria;
+    private TextView textViewPercBattery;
     private SwitchCompat switchSendData;
     private BluetoothManagerControl bluetoothManagerControl;
 
@@ -50,13 +50,13 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
 
         seekBarServoBase = root.findViewById(R.id.seekBarServoBase);
         seekBarServoAltura = root.findViewById(R.id.seekBarServoAltura);
-        seekBarServoAngulo = root.findViewById(R.id.seekBarServoAngulo);
+        seekBarServoAlcance = root.findViewById(R.id.seekBarServoAlcance);
         seekBarServoGarra = root.findViewById(R.id.seekBarServoGarra);
 
-        TextView textViewValorBase = root.findViewById(R.id.textViewValorBase);
-        TextView textViewValorAltura = root.findViewById(R.id.textViewValorAltura);
-        TextView textViewValorAngulo = root.findViewById(R.id.textViewValorAngulo);
-        TextView textViewValorGarra = root.findViewById(R.id.textViewValorGarra);
+        TextView textViewValorBase = root.findViewById(R.id.textViewValorAnguloBase);
+        TextView textViewValorAltura = root.findViewById(R.id.textViewValorAnguloAltura);
+        TextView textViewValorAlcance = root.findViewById(R.id.textViewValorAnguloAlcance);
+        TextView textViewValorGarra = root.findViewById(R.id.textViewValorAnguloGarra);
 
         switchSendData = root.findViewById(R.id.switchSendData);
         switchSendData.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -64,16 +64,16 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
             bluetoothManagerControl.write(command.getBytes());
         });
 
-        textViewPercBateria = root.findViewById(R.id.textViewPercBatteryToolbar);
+        textViewPercBattery = root.findViewById(R.id.textViewPercBatteryToolbar);
 
         seekBarServoBase.setOnSeekBarChangeListener(new SeekBarChange(textViewValorBase));
         seekBarServoAltura.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAltura));
-        seekBarServoAngulo.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAngulo));
+        seekBarServoAlcance.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAlcance));
         seekBarServoGarra.setOnSeekBarChangeListener(new SeekBarChange(textViewValorGarra));
 
         textViewValorBase.setText(String.format(Locale.getDefault(), "%d°", seekBarServoBase.getProgress()));
         textViewValorAltura.setText(String.format(Locale.getDefault(), "%d°", seekBarServoAltura.getProgress()));
-        textViewValorAngulo.setText(String.format(Locale.getDefault(), "%d°", seekBarServoAngulo.getProgress()));
+        textViewValorAlcance.setText(String.format(Locale.getDefault(), "%d°", seekBarServoAlcance.getProgress()));
         textViewValorGarra.setText(String.format(Locale.getDefault(), "%d°", seekBarServoGarra.getProgress()));
 
         updateStatusDevicePaired();
@@ -122,25 +122,27 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
 
             String[] aux = dataReceived.split(":");
             String[] arrayAng = aux[1].split("-");
-            String angBs = arrayAng[0];
-            String angAt = arrayAng[1];
-            String angAn = arrayAng[2];
-            String angGr = arrayAng[3];
+            String angBase = arrayAng[0];
+            String andAltura = arrayAng[1];
+            String angAlcance = arrayAng[2];
+            String angGarra = arrayAng[3];
 
-            int bs = Integer.parseInt(angBs.substring(2));
-            int at = Integer.parseInt(angAt.substring(2));
-            int an = Integer.parseInt(angAn.substring(2));
-            int gr = Integer.parseInt(angGr.substring(2));
+            int valorAnguloBase = Integer.parseInt(angBase.substring(2));
+            int valorAnguloAltura = Integer.parseInt(andAltura.substring(2));
+            int valorAnguloAlcance = Integer.parseInt(angAlcance.substring(2));
+            int valorAnguloGarra = Integer.parseInt(angGarra.substring(2));
 
-            seekBarServoBase.setProgress(bs);
-            seekBarServoAltura.setProgress(at);
-            seekBarServoAngulo.setProgress(an);
-            seekBarServoGarra.setProgress(gr);
+            seekBarServoBase.setProgress(valorAnguloBase);
+            seekBarServoAltura.setProgress(valorAnguloAltura);
+            seekBarServoAlcance.setProgress(valorAnguloAlcance);
+            seekBarServoGarra.setProgress(valorAnguloGarra);
         }
 
-        if (dataReceived.contains("bat")) {
-            String perc = dataReceived.substring(3);
-            textViewPercBateria.setText(String.format(Locale.getDefault(), "%s%%", perc));
+        if (dataReceived.contains("bat:")) {
+            String percAndVolt = dataReceived.substring(4);
+            String[] arrayPercAndVolt = percAndVolt.split(";");
+            String perc = arrayPercAndVolt[0];
+            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", perc));
         }
     }
 
@@ -182,8 +184,8 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
                 bluetoothManagerControl.write(command.getBytes());
                 return;
             }
-            if (seekBar.getId() == R.id.seekBarServoAngulo) {
-                String command = String.format(Locale.getDefault(), "ag%d\n", seekBar.getProgress());
+            if (seekBar.getId() == R.id.seekBarServoAlcance) {
+                String command = String.format(Locale.getDefault(), "ac%d\n", seekBar.getProgress());
                 bluetoothManagerControl.write(command.getBytes());
                 return;
             }

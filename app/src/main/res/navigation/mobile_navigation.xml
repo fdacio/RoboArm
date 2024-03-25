@@ -27,6 +27,6 @@
         android:id="@+id/navigation_bateria"
         android:name="br.com.daciosoftware.roboarm.ui.bateria.BateriaFragment"
         android:label="@string/title_bateria"
-        tools:layout="@layout/fragment_bateria" />
+        tools:layout="@layout/fragment_battery" />
 
 </navigation>
