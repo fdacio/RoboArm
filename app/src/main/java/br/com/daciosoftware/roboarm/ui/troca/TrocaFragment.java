@@ -19,19 +19,21 @@ import java.util.Locale;
 
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
+import br.com.daciosoftware.roboarm.ui.bateria.BateriaDTO;
 
 public class TrocaFragment extends Fragment implements BluetoothManagerControl.ConnectionDevice {
     private Context appContext;
     private BluetoothManagerControl bluetoothManagerControl;
     private Toolbar toolbar;
     private TextView textViewPercBattery;
-
+    private BateriaDTO bateriaDTO;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
         bluetoothManagerControl.setListenerConnectionDevice(TrocaFragment.this);
+        bateriaDTO = BateriaDTO.getInstance();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class TrocaFragment extends Fragment implements BluetoothManagerControl.C
         Button buttonSpeed1 = root.findViewById(R.id.button_speed1);
         Button buttonSpeed2 = root.findViewById(R.id.button_speed2);
         textViewPercBattery = root.findViewById(R.id.textViewPercBatteryToolbar);
+        textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", bateriaDTO.getPerc()));
 
         buttonStart.setOnClickListener(v -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
@@ -127,7 +130,10 @@ public class TrocaFragment extends Fragment implements BluetoothManagerControl.C
             String percAndVolt = dataReceived.substring(4);
             String[] arrayPercAndVolt = percAndVolt.split(";");
             String perc = arrayPercAndVolt[0];
-            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", perc));
+            String volt = arrayPercAndVolt[1];
+            bateriaDTO.setPerc(perc);
+            bateriaDTO.setVolt(volt);
+            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", bateriaDTO.getPerc()));
         }
     }
 }

@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import br.com.daciosoftware.roboarm.R;
 import br.com.daciosoftware.roboarm.bluetooth.BluetoothManagerControl;
+import br.com.daciosoftware.roboarm.ui.bateria.BateriaDTO;
 
 public class RoboArmFragment extends Fragment implements BluetoothManagerControl.ConnectionDevice {
 
@@ -33,6 +34,7 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
     private TextView textViewPercBattery;
     private SwitchCompat switchSendData;
     private BluetoothManagerControl bluetoothManagerControl;
+    private BateriaDTO bateriaDTO;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,6 +42,7 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
         bluetoothManagerControl.setListenerConnectionDevice(RoboArmFragment.this);
+        bateriaDTO = BateriaDTO.getInstance();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
         });
 
         textViewPercBattery = root.findViewById(R.id.textViewPercBatteryToolbar);
+        textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", bateriaDTO.getPerc()));
 
         seekBarServoBase.setOnSeekBarChangeListener(new SeekBarChange(textViewValorBase));
         seekBarServoAltura.setOnSeekBarChangeListener(new SeekBarChange(textViewValorAltura));
@@ -142,7 +146,10 @@ public class RoboArmFragment extends Fragment implements BluetoothManagerControl
             String percAndVolt = dataReceived.substring(4);
             String[] arrayPercAndVolt = percAndVolt.split(";");
             String perc = arrayPercAndVolt[0];
-            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", perc));
+            String volt = arrayPercAndVolt[1];
+            bateriaDTO.setPerc(perc);
+            bateriaDTO.setVolt(volt);
+            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", bateriaDTO.getPerc()));
         }
     }
 

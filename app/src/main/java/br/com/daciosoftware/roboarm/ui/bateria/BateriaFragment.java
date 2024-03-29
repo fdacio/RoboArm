@@ -29,12 +29,15 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
     private TextView textViewVoltBattery;
     private Toolbar toolbar;
 
+    private BateriaDTO bateriaDTO;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         appContext = context;
         bluetoothManagerControl = BluetoothManagerControl.getInstance(context);
         bluetoothManagerControl.setListenerConnectionDevice(BateriaFragment.this);
+        bateriaDTO = BateriaDTO.getInstance();
     }
 
     @Override
@@ -47,14 +50,17 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
         textViewPercBattery = root.findViewById(R.id.textViewPercBattery);
         textViewVoltBattery = root.findViewById(R.id.textViewVoltBattery);
 
+        textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", bateriaDTO.getPerc()));
+        textViewVoltBattery.setText(String.format(Locale.getDefault(), "%sV", bateriaDTO.getVolt()));
+
         switchBattery = root.findViewById(R.id.switchBattery);
-        switchBattery.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        switchBattery.setOnClickListener((buttonView) -> {
             BluetoothDevice devicePaired = bluetoothManagerControl.getDevicePaired();
             if (devicePaired  == null) {
                 Toast.makeText(appContext, R.string.message_dont_device_pair, Toast.LENGTH_LONG).show();
                 return;
             }
-            String command = (isChecked) ? "BTS\n" : "BTN\n";
+            String command = (switchBattery.isChecked()) ? "bts\n" : "btn\n";
             bluetoothManagerControl.write(command.getBytes());
             if (switchBattery.isChecked()) {
                 switchBattery.setText(R.string.text_switch_battery);
@@ -110,17 +116,18 @@ public class BateriaFragment extends Fragment implements BluetoothManagerControl
 
     @Override
     public void postDataReceived(String dataReceived) {
+        if (dataReceived.contains("bt")) {
+            switchBattery.setChecked(dataReceived.equals("bts"));
+        }
         if (dataReceived.contains("bat:")) {
             String percAndVolt = dataReceived.substring(4);
             String[] arrayPercAndVolt = percAndVolt.split(";");
             String perc = arrayPercAndVolt[0];
             String volt = arrayPercAndVolt[1];
-            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", perc));
-            textViewVoltBattery.setText(String.format(Locale.getDefault(), "%sV", volt));
-        }
-        if (dataReceived.contains("bts")) {
-            String bts = dataReceived.substring(3);
-            switchBattery.setChecked(bts.equals("1"));
+            bateriaDTO.setPerc(perc);
+            bateriaDTO.setVolt(volt);
+            textViewPercBattery.setText(String.format(Locale.getDefault(), "%s%%", bateriaDTO.getPerc()));
+            textViewVoltBattery.setText(String.format(Locale.getDefault(), "%sV", bateriaDTO.getVolt()));
         }
     }
 }
